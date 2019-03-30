@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Photo-Sharing</string>
+    <string name="edit_message">\Enter a message\</string>
+    <string name="button_send">\Send\</string>
+    <string name="login_button">\Login\</string>
+    <string name="login_username">\Enter Username\</string>
+    <string name="login_password">\Enter Password\</string>
+    <string name="Server_state">\Connecting to Server, please wait\</string>
+
+
+
+
+</resources>

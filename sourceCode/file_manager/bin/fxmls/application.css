@@ -1,0 +1,35 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+#search {
+  -fx-background-image:url('../img/search-icon-hi.png');
+  -fx-cursor: hand;
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 15px;
+  -fx-background-position: left center;
+  -fx-alignment: center;
+}
+
+.my-button {
+   -fx-cursor: hand;
+   -fx-border-style: solid ;
+   -fx-border-width: 2px ;
+   -fx-background-color:  #96beff ;
+   -fx-border-color:  #96beff ;
+   -fx-text-fill: white ;
+}
+
+.my-button:pressed {
+	-fx-background-color: #4dbf42 ;
+	-fx-border-color: #4dbf42 ;
+}
+
+.my-button:hover {
+}
+
+.my-buttonNF {
+   -fx-cursor: hand;
+   -fx-border-style: solid ;
+   -fx-border-width: 2px ;
+   -fx-background-color:  #96beff ;
+   -fx-border-color:  #96beff ;
+}

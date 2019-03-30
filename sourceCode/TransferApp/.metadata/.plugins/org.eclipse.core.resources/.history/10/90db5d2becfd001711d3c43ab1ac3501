@@ -1,0 +1,215 @@
+package controllers;
+
+import java.io.*;
+import java.net.Inet6Address;
+import java.net.Socket;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ResourceBundle;
+
+import application.FileTransferRunnable;
+import application.Main;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+
+public class MainController implements Initializable{
+
+	private String ip;
+	private Socket client;
+	private DataOutputStream out;
+	private DataInputStream in;
+	
+	@FXML
+	private TextField loginUsername;
+	@FXML
+	private PasswordField loginPassword;
+	@FXML
+	private Button loginBtn;
+	@FXML
+    private TextField registerUsername;
+    @FXML
+    private PasswordField registerPassword1;
+    @FXML
+    private PasswordField registerPassword2;
+    @FXML
+    private Button registerBtn;
+    @FXML
+    private Text registerInfo;
+    @FXML
+    private Text loginInfo;
+	
+	public MainController() {
+		ip = "172.16.125.199";
+		int port = Integer.parseInt("8081");
+        try {
+           client = new Socket(ip, port);
+           System.out.println("Connecting to " + ip + " on port " + port);
+           
+           System.out.println("Just connected to " + client.getRemoteSocketAddress());
+           OutputStream outToServer = client.getOutputStream();
+           out = new DataOutputStream(outToServer);
+           InputStream inFromServer = client.getInputStream();
+           in = new DataInputStream(inFromServer);
+           
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
+	}
+	
+	private void setGlobalEventHandler(Node node) {
+	    node.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	        	if (node == loginUsername || node == loginPassword
+	        			|| node == loginBtn) {
+	        		loginBtn.fire();
+				}
+	        	else if (node == registerUsername || node == registerPassword1
+	        			|| node == registerPassword2 || node == registerBtn) {
+					registerBtn.fire();
+				}
+	           
+	           ev.consume(); 
+	        }
+	    });
+	}
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		setGlobalEventHandler(loginUsername);
+		setGlobalEventHandler(loginPassword);
+		setGlobalEventHandler(loginBtn);
+		setGlobalEventHandler(registerUsername);
+		setGlobalEventHandler(registerPassword1);
+		setGlobalEventHandler(registerPassword2);
+		setGlobalEventHandler(registerBtn);
+	}
+	
+	@FXML
+	void login(ActionEvent event) {
+		if (loginInfo.isVisible())
+    		loginInfo.setVisible(false);
+		
+        try {
+        	String username = loginUsername.getText();
+        	String password = loginPassword.getText();
+        	if (username.equals("") || password.equals("")) {
+        		loginInfo.setText("Error: empty fields!");
+        		loginInfo.setFill(Color.RED);
+        		loginInfo.setVisible(true);
+        		//loginUsername.requestFocus();
+        		return;
+        	}
+        	//java doesn' t put by default '\0' termination character
+        	//so put it manually
+        	String message = "login_req "+username+" "+password+"\0";
+            out.write(message.getBytes());
+            //from C++ sockets read bytes
+            byte[] buf = new byte[1024];
+            in.read(buf);
+            String serverAnswer = new String(buf, StandardCharsets.UTF_8);
+            serverAnswer = serverAnswer.trim();
+            System.out.println("Server says " + serverAnswer);
+            
+            if (serverAnswer.contains("Connection refused")) {
+            	loginInfo.setText("Error: wrong username or password!");
+        		loginInfo.setFill(Color.RED);
+        		loginInfo.setVisible(true);
+            }
+            else {
+            	String path = serverAnswer;
+	            FXMLLoader fxmlLoader = new FXMLLoader(getClass()
+	        			.getResource("../fxmls/login_success.fxml"));
+	            LoginController controller = new LoginController(out,path);
+	            fxmlLoader.setController(controller);
+	            Parent root = fxmlLoader.load();
+	        	Main.changeScene(root);
+	        	
+            }
+
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
+       
+	}
+	
+	@FXML
+    void register(ActionEvent event) {
+		if (registerInfo.isVisible())
+    		registerInfo.setVisible(false);
+		
+		String username = registerUsername.getText();
+    	String password1 = registerPassword1.getText();
+    	String password2 = registerPassword2.getText();
+    	if (username.equals("") || password1.equals("") || password2.equals("")) {
+    		registerInfo.setText("Error: empty fields!");
+    		registerInfo.setFill(Color.RED);
+    		registerInfo.setVisible(true);
+    		//registerUsername.requestFocus();
+    		return;
+    	}
+    	if (!password1.equals(password2)) {
+    		registerInfo.setText("Error: not matching passwords!");
+    		registerInfo.setFill(Color.RED);
+    		registerInfo.setVisible(true);
+    		return;
+    	}
+    	try {
+    	String message = "register_req "+username+" "+password1+"\0";
+        out.write(message.getBytes());
+        //from C++ sockets read bytes
+        byte[] buf = new byte[1024];
+        in.read(buf);
+        String serverAnswer = new String(buf, StandardCharsets.UTF_8);
+        serverAnswer = serverAnswer.trim();
+        System.out.println("Server says " + serverAnswer);
+        
+        if (serverAnswer.contains("User added")) {
+        	registerInfo.setText("Successfull registration!");
+        	registerInfo.setFill(Color.GREEN);
+        	registerInfo.setVisible(true);
+        }
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+	
+	@FXML
+    void sendFile(ActionEvent event) {
+		try {
+			byte[] bytes = new byte[1024];
+			//for C++ sockets add '\0' at the end of string
+			String request = "transfer_req\0";
+	        out.write(request.getBytes());
+	        System.out.println("Sent : " + request);
+	        
+	        bytes = new byte[1024];
+	        in.read(bytes);
+			String serverAnswer = new String(bytes, StandardCharsets.UTF_8);
+			serverAnswer = serverAnswer.trim();
+			System.out.println("Server says " + serverAnswer);
+			
+			if (!serverAnswer.equals("error")) {
+				int port = Integer.parseInt(serverAnswer);
+				System.out.println("port : " + port);
+				Thread transferThread = new Thread(new FileTransferRunnable(this.ip,port));
+				transferThread.start();
+			}
+		
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}

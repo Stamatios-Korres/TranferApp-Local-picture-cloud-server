@@ -1,0 +1,37 @@
+
+---------------		Android Apps are individuals Components 	------------------------------------------------------------
+
+1) Activity
+	->Interacting with the User (Main Activity is Entry Point)
+2) Service
+	-> General Purpose entry point, keep things running in the background.
+	-> User is aware of the service running or not.
+3) Broadcast receivers
+	-> Receives events outside of the regural flow of the app, from outside of the app (Low battery, Screnn has been turned off etc)
+4)Content providers
+	-> A shared (Or private) set of app data that you can store in the file system, in a SQLite database, on the web, or on any 		other persistent storage location that your app can access.
+
+
+---------------------------------------------	Activating Components	------------------------------------------------------------
+
+-> Components are activated by a message called intent.
+-> Components can be part of my app or not.
+
+
+---------------------------------------------	The Manifest File	------------------------------------------------------------
+
+Every app has a manifest file, in which it declares each of its components
+
+Format:
+	XML
+
+it defines:
+	-> User's Persmissions
+	-> Minimum APIs
+	-> Software hardware needs
+	-> APIs to link against (Google Library API) 
+
+How and when an intent will wake up an component and with what data, target.
+Intent Filters, how it responds to when other apps request the component
+
+Declares the requirements of the app 

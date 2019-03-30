@@ -1,0 +1,16 @@
+Bugs of my code 
+
+1) GUI freezes when one of the background thread freezes -------------------------------(done)
+2) Rasperry Server does not always close the Client Programms --------------------------(happened again)
+3) The infinite loop problem -----------------------------------------------------------(done)
+4) Some undefined behaviour with user giving credential --------------------------------(done)
+5) Fix Paris CSS issues ----------------------------------------------------------------(not done) 
+6) When no file is beeing presented is likely a fault of the C++ code ------------------(done)
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+1) Bugs with my tree (What happens when it does not find the target node?)
+2) Bug when renaming many files one after another
+3) Pc chrashes -> Probably a mistake of Java application
+4) Still to be done, copy( Easy now that I have the move, same without deleting)

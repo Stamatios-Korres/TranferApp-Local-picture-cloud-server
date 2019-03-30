@@ -1,0 +1,13 @@
+Process with id: 9877 was created
+# ERR: SQLException in ../auth/MySqlConnector.cpp# ERR: Access denied for user 'root'@'localhost' (using password: YES) (MySQL error code: 1045New Authentication Service is running!
+Waiting for correct credential
+PZ@
+Unauthorized
+Connection was closed
+Process with p_id: 9877 closing socket
+ investigate: /home/timos/ServerFiles/Pictures/tim/
+My job has finished, send 40 files
+PZ@
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                `@
+Connection was closed
+Process with p_id: 18552 closing socket

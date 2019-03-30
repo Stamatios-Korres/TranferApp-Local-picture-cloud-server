@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<!-- Controller for this fxml gets set programatically from MainController's function login()  -->
+<AnchorPane prefHeight="360.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+   <children>
+      <Button fx:id="openBtn" layoutX="154.0" layoutY="265.0" mnemonicParsing="false" onAction="#openFolder" prefHeight="26.0" prefWidth="120.0" styleClass="my_button" stylesheets="@application.css" text="open files" />
+      <Button fx:id="logoutBtn" layoutX="334.0" layoutY="265.0" mnemonicParsing="false" onAction="#logout" prefHeight="26.0" prefWidth="120.0" styleClass="my_button" stylesheets="@application.css" text="logout" />
+      <Label layoutX="154.0" layoutY="126.0" prefHeight="54.0" prefWidth="300.0" text="You 're now logged in , pleasa don't close this window in order to access your files." textAlignment="CENTER" wrapText="true" />
+      <Label layoutX="153.0" layoutY="37.0" prefHeight="42.0" prefWidth="300.0" text="Super Transfer" textAlignment="CENTER">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
